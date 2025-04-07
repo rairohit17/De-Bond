@@ -30,12 +30,12 @@ contract ElectoralBond is Semaphore, ReentrancyGuard {
         createGroup(groupId, 20, address(this));
     }
     
-    /**
-     *  Create a new electoral bond by depositing ETH and getting an identity commitment
-     *   use a randomSecret A random string provided by the voter to generate the identity
-     *  return the  generated identityCommitment  to the bond creater  
-     *  return the  nullifierHash to the bond creater 
-     */
+    
+      //Create a new electoral bond by depositing ETH and getting an identity commitment
+       // use a randomSecret A random string provided by the voter to generate the identity
+       //return the  generated identityCommitment  to the bond creater  
+       //return the  nullifierHash to the bond creater 
+     
     function createBond(
         bytes32 randomSecret
     ) external payable nonReentrant returns (uint256 identityCommitment, uint256 nullifierHash) {
@@ -64,9 +64,9 @@ contract ElectoralBond is Semaphore, ReentrancyGuard {
         return (identityCommitment, nullifierHash);
     }
     
-    /**
-     *  Generates an identity commitment from address and random secret
-     */
+    
+     //  Generates an identity commitment from address and random secret
+     
     function generateIdentityCommitment(
         address account,
         bytes32 randomSecret
@@ -74,9 +74,9 @@ contract ElectoralBond is Semaphore, ReentrancyGuard {
         return uint256(keccak256(abi.encodePacked(account, randomSecret))) % SemaphoreCore.SNARK_SCALAR_FIELD;
     }
     
-    /**
-     * Generates a nullifier hash from address and groupId
-     */
+    
+     // Generates a nullifier hash from address and groupId
+     
     function generateNullifierHash(
         address account,
         uint256 _groupId
@@ -84,9 +84,9 @@ contract ElectoralBond is Semaphore, ReentrancyGuard {
         return uint256(keccak256(abi.encodePacked(account, _groupId))) % SemaphoreCore.SNARK_SCALAR_FIELD;
     }
 
-    /**
-     *  Withdraw funds from an electoral bond using a zero-knowledge proof
-     */
+    
+     //  Withdraw funds from an electoral bond using a zero-knowledge proof
+     
 
      function withdrawBond(
         uint256 nullifierHash,
@@ -127,16 +127,16 @@ contract ElectoralBond is Semaphore, ReentrancyGuard {
         emit BondWithdrawn(nullifierHash, recipient, amount);
     }
     
-    /**
-     *  Get the remaining amount that can be withdrawn from a bond
-     */
+    
+       //Get the remaining amount that can be withdrawn from a bond
+     
     function getRemainingAmount(uint256 nullifierHash) public view returns (uint256) {
         return nullifierToAmount[nullifierHash] - nullifierToWithdrawn[nullifierHash];
     }
     
-    /**
-     *  Get the total amount of a bond
-     */
+    
+     // Get the total amount of a bond
+     
     function getBondAmount(uint256 nullifierHash) public view returns (uint256) {
         return nullifierToAmount[nullifierHash];
     }
